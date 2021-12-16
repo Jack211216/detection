@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.detection.mapper.UserMapper">
+
+    <resultMap id="Result" type="com.detection.entity.User">
+        <id property="id" column="id"/>
+        <result property="account" column="account"/>
+        <result property="password" column="password"/>
+        <result property="email" column="email"/>
+        <result property="phone" column="phone"/>
+    </resultMap>
+
+    <sql id="userData">
+       select  id,account,password,phone,email,tencent_account as tencentAccount,tencent_type as tencentType, tencent_name as tencentName,account_name as accountName,sex,birthday,address,province,town,county,img_url as imgUrl,status,types from t_user
+    </sql>
+    <delete id="removeUse">
+        delete from t_user where id=#{userId}
+    </delete>
+
+    <select id="queryUser" resultMap="Result">
+        select  id,account,password,phone,email from t_user
+        where  (account=#{account}  or phone=#{phone} or email=#{email})
+
+    </select>
+
+    <insert id="insertUser">
+        insert into t_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="account != null">account,</if>
+
+            <if test="password != null">password,</if>
+            <if test="phone != null">phone,</if>
+            <if test="email != null">email,</if>
+            <if test="tencentAccount != null">tencent_account,</if>
+            <if test="tencentType != null">tencent_type,</if>
+            <if test="tencentName != null">tencent_name,</if>
+            <if test="accountName != null">account_name,</if>
+            <if test="sex != null">sex,</if>
+            <if test="birthday != null">birthday,</if>
+            <if test="address != null">address,</if>
+            <if test="province != null">province,</if>
+            <if test="town != null">town,</if>
+            <if test="county != null">county,</if>
+            <if test="imgUrl != null">img_url,</if>
+            <if test="status != null">status,</if>
+            <if test="types != null">types,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="account != null">#{account},</if>
+
+            <if test="password != null">#{password},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="email != null">#{email},</if>
+            <if test="tencentAccount != null">#{tencentAccount},</if>
+            <if test="tencentType != null">#{tencentType},</if>
+            <if test="tencentName != null">#{tencentName},</if>
+            <if test="accountName != null">#{accountName},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="birthday != null">#{birthday},</if>
+            <if test="address != null">#{address},</if>
+            <if test="province != null">#{province},</if>
+            <if test="town != null">#{town},</if>
+            <if test="county != null">#{county},</if>
+            <if test="imgUrl != null">#{imgUrl},</if>
+            <if test="status != null">#{status},</if>
+            <if test="types != null">#{types},</if>
+        </trim>
+    </insert>
+
+    <update id="updateUser">
+        update t_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="account != null">account=#{account},</if>
+
+            <if test="password != null">password=#{password},</if>
+            <if test="phone != null">phone=#{phone},</if>
+            <if test="email != null">email=#{email},</if>
+            <if test="tencentAccount != null">tencent_account=#{tencentAccount},</if>
+            <if test="tencentType != null">tencent_type=#{tencentType},</if>
+            <if test="tencentName != null">tencent_name=#{tencentName},</if>
+            <if test="accountName != null">account_name=#{accountName},</if>
+            <if test="sex != null">sex=#{sex},</if>
+            <if test="birthday != null">birthday=#{birthday},</if>
+            <if test="address != null">address=#{address},</if>
+            <if test="province != null">province=#{province},</if>
+            <if test="town != null">town=#{town},</if>
+            <if test="county != null">county=#{county},</if>
+            <if test="imgUrl != null">img_url=#{imgUrl},</if>
+            <if test="status != null">status=#{status},</if>
+            <if test="types != null">types=#{types},</if>
+        </trim>
+        where id = #{id}
+    </update>
+</mapper>
