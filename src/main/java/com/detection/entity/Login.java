@@ -10,17 +10,27 @@ public class Login extends Pager{
 
     private String password;
 
-    private String phone;
+    private int phone;
 
     private String email;
 
     private String tryCode;
 
-    public String getPhone() {
+    private Long id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public int getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(int phone) {
         this.phone = phone;
     }
 

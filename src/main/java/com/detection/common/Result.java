@@ -1,4 +1,6 @@
-package com.detection.util;
+package com.detection.common;
+
+import com.detection.util.HttpStatus;
 
 import java.util.HashMap;
 
@@ -66,7 +68,7 @@ public class Result extends HashMap<String,Object> {
 
 
 
-    public static Result success(Object data){
+    public static Result success(Object ... data){
 
         return success("操作成功",data);
 

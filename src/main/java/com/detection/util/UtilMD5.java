@@ -97,8 +97,7 @@ public class UtilMD5 {
      * @throws NoSuchAlgorithmException
      * @throws UnsupportedEncodingException
      */
-    public static String getEncryptedPwd(String password)
-            throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public static String getEncryptedPwd(String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         //声明加密后的口令数组变量
         byte[] pwd = null;
         //随机数生成器

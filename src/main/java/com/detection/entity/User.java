@@ -19,7 +19,7 @@ public class User{
    private Integer tencentType;
    private String  tencentName;
    private String  accountName;
-   private Integer  sex;
+   private char  sex;
    private Data birthday;
    private String  address;
    private String  province;
@@ -109,11 +109,11 @@ public class User{
         this.types = types;
     }
 
-    public Integer getSex() {
+    public char getSex() {
         return sex;
     }
 
-    public void setSex(Integer sex) {
+    public void setSex(char sex) {
         this.sex = sex;
     }
 
@@ -172,6 +172,5 @@ public class User{
     public void setStatus(Integer status) {
         this.status = status;
     }
-
 
 }

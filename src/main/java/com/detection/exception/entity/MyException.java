@@ -12,6 +12,8 @@ public class MyException extends RuntimeException {
 
     private String descInfo;   //描述
 
+    private  Object[] objs;
+
     public MyException() {
     }
 
@@ -28,6 +30,20 @@ public class MyException extends RuntimeException {
         this.code = code;
         this.message = message;
         this.descInfo = descInfo;
+    }
+
+    public MyException(Object ... obj) {
+
+        this.objs = obj;
+
+    }
+
+    public Object[] getObjs() {
+        return objs;
+    }
+
+    public void setObjs(Object[] objs) {
+        this.objs = objs;
     }
 
     public int getCode() {

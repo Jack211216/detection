@@ -1,11 +1,11 @@
 package com.detection.exception;
 
 import com.detection.exception.entity.MyException;
-import com.detection.util.Result;
-import com.detection.util.StringUtils;
+import com.detection.common.Result;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author ding
@@ -16,9 +16,9 @@ public class WholeExceptionHandler {
 
     //声明要捕获的异常
     @ExceptionHandler(MyException.class)
-    public Result ExcepitonHandler(MyException me) {
-
-        if(StringUtils.isNull(me.getCode())){
+    @ResponseBody
+    public Result Method(MyException me) {
+        if(me.getCode()!=0){
           return Result.error(me.getMessage());
         }
         return  Result.error(me.getCode(),me.getMessage());

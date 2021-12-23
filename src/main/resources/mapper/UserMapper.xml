@@ -4,93 +4,120 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.detection.mapper.UserMapper">
 
-    <resultMap id="Result" type="com.detection.entity.User">
-        <id property="id" column="id"/>
-        <result property="account" column="account"/>
-        <result property="password" column="password"/>
-        <result property="email" column="email"/>
-        <result property="phone" column="phone"/>
-    </resultMap>
+
 
     <sql id="userData">
-       select  id,account,password,phone,email,tencent_account as tencentAccount,tencent_type as tencentType, tencent_name as tencentName,account_name as accountName,sex,birthday,address,province,town,county,img_url as imgUrl,status,types from t_user
+       select  id,school_name as schoolName ,school_code as schoolCode,department,city,school_level as schoolLevel,template_id as templateId,province_code as provinceCode,remark from t_college
     </sql>
-    <delete id="removeUse">
-        delete from t_user where id=#{userId}
+
+
+
+
+    <delete id="removeUser">
+        delete from t_college
+        where id in
+        <foreach collection="userIds" item="id" open="(" close=")" separator="," >
+          #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteDBLog">
+      delete from t_db_log where id in
+      <foreach collection="ids" item="id" separator="," open="(" close=")">
+         #{id}
+      </foreach>
     </delete>
 
-    <select id="queryUser" resultMap="Result">
-        select  id,account,password,phone,email from t_user
-        where  (account=#{account}  or phone=#{phone} or email=#{email})
-
-    </select>
-
-    <insert id="insertUser">
-        insert into t_user
+    <insert id="insertCollege">
+        insert into t_college
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="account != null">account,</if>
-
-            <if test="password != null">password,</if>
-            <if test="phone != null">phone,</if>
-            <if test="email != null">email,</if>
-            <if test="tencentAccount != null">tencent_account,</if>
-            <if test="tencentType != null">tencent_type,</if>
-            <if test="tencentName != null">tencent_name,</if>
-            <if test="accountName != null">account_name,</if>
-            <if test="sex != null">sex,</if>
-            <if test="birthday != null">birthday,</if>
-            <if test="address != null">address,</if>
-            <if test="province != null">province,</if>
-            <if test="town != null">town,</if>
-            <if test="county != null">county,</if>
-            <if test="imgUrl != null">img_url,</if>
-            <if test="status != null">status,</if>
-            <if test="types != null">types,</if>
+            <if test="schoolName != null">school_name,</if>
+            <if test="schoolCode != null">school_code,</if>
+            <if test="department != null">department,</if>
+            <if test="city != null">city,</if>
+            <if test="schoolLevel != null">school_level,</if>
+            <if test="remark != null">remark,</if>
+            <if test="provinceCode != null">#{province_code},</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="account != null">#{account},</if>
+            <if test="schoolName != null">#{schoolName},</if>
+            <if test="schoolCode != null">#{schoolCode},</if>
+            <if test="department != null">#{department},</if>
+            <if test="city != null">#{city},</if>
+            <if test="schoolLevel != null">#{schoolLevel},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="provinceCode != null">#{provinceCode},</if>
+        </trim>
+    </insert>
+    <insert id="insertListCollege">
+        insert into t_college (school_name,school_code,department,city,school_level,province_code,remark)
+        values
+        <foreach collection="colleges" item="item" separator=",">
+            (#{item.schoolName},#{item.schoolCode},#{item.department},#{item.city},#{item.schoolLevel},#{item.provinceCode},#{item.remark})
+        </foreach>
+    </insert>
 
-            <if test="password != null">#{password},</if>
-            <if test="phone != null">#{phone},</if>
-            <if test="email != null">#{email},</if>
-            <if test="tencentAccount != null">#{tencentAccount},</if>
-            <if test="tencentType != null">#{tencentType},</if>
-            <if test="tencentName != null">#{tencentName},</if>
-            <if test="accountName != null">#{accountName},</if>
-            <if test="sex != null">#{sex},</if>
-            <if test="birthday != null">#{birthday},</if>
-            <if test="address != null">#{address},</if>
-            <if test="province != null">#{province},</if>
-            <if test="town != null">#{town},</if>
-            <if test="county != null">#{county},</if>
-            <if test="imgUrl != null">#{imgUrl},</if>
-            <if test="status != null">#{status},</if>
-            <if test="types != null">#{types},</if>
+
+    <update id="updateCollege">
+    update t_college
+    <trim prefix="SET" suffixOverrides=",">
+        <if test="schoolName != null">school_name=#{schoolName},</if>
+        <if test="schoolCode != null">school_code=#{schoolCode},</if>
+        <if test="department != null">department=#{department},</if>
+        <if test="city != null">city=#{city},</if>
+        <if test="schoolLevel != null">school_level=#{schoolLevel},</if>
+        <if test="remark != null">remark=#{remark},</if>
+    </trim>
+    where id = #{id}
+    </update>
+
+
+    <update id="updateDBLog">
+        update t_db_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="state != null and state!=''">state=#{state},</if>
+        </trim>
+        where id=#{id}
+    </update>
+
+
+    <select id="queryCollege" resultType="hashmap">
+        select id,school_name as schoolName,school_code as schoolCode,
+        department,city,school_level as schoolLevel,template_id as templateId,province_code as provinceCode,remark
+        from sys_dict a join t_college b on a.dict_value=b.province_code and a.dict_type='province' and a.state='0'
+    </select>
+
+    <select id="queryDBLog" resultType="com.detection.entity.DBLog">
+        select oper_person,oper_account,file_path,oper_time,remark from t_db_log
+        where state='0' order by oper_time desc limit 1
+    </select>
+    <select id="queryAllDBLog" resultType="com.detection.entity.DBLog">
+         select id,oper_person as operPerson,oper_account as operAccount,file_path as filePath,oper_time as operTime,remark from t_db_log
+    </select>
+    <select id="queryListDBLog" resultType="com.detection.entity.DBLog">
+         select file_path as filePath from t_db_log where id in
+         <foreach collection="ids" item="id" separator="," open="(" close=")">
+           #{id}
+         </foreach>
+    </select>
+
+    <insert id="insertDBLog">
+        insert into t_db_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="operPerson != null">oper_person,</if>
+            <if test="operAccount != null">oper_account,</if>
+            <if test="filePath != null">file_path,</if>
+            <if test="operTime != null">oper_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="state != null">state,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="operPerson != null">#{operPerson},</if>
+            <if test="operAccount != null">#{operAccount},</if>
+            <if test="filePath != null">#{filePath},</if>
+            <if test="operTime != null">#{operTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="state != null">#{state},</if>
         </trim>
     </insert>
 
-    <update id="updateUser">
-        update t_user
-        <trim prefix="SET" suffixOverrides=",">
-            <if test="account != null">account=#{account},</if>
-
-            <if test="password != null">password=#{password},</if>
-            <if test="phone != null">phone=#{phone},</if>
-            <if test="email != null">email=#{email},</if>
-            <if test="tencentAccount != null">tencent_account=#{tencentAccount},</if>
-            <if test="tencentType != null">tencent_type=#{tencentType},</if>
-            <if test="tencentName != null">tencent_name=#{tencentName},</if>
-            <if test="accountName != null">account_name=#{accountName},</if>
-            <if test="sex != null">sex=#{sex},</if>
-            <if test="birthday != null">birthday=#{birthday},</if>
-            <if test="address != null">address=#{address},</if>
-            <if test="province != null">province=#{province},</if>
-            <if test="town != null">town=#{town},</if>
-            <if test="county != null">county=#{county},</if>
-            <if test="imgUrl != null">img_url=#{imgUrl},</if>
-            <if test="status != null">status=#{status},</if>
-            <if test="types != null">types=#{types},</if>
-        </trim>
-        where id = #{id}
-    </update>
 </mapper>

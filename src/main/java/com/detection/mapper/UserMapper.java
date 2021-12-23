@@ -1,11 +1,15 @@
 package com.detection.mapper;
 
 
-import com.detection.entity.Login;
+import com.detection.entity.College;
+import com.detection.entity.DBLog;
+import com.detection.entity.SharedParam;
 import com.detection.entity.User;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -15,11 +19,25 @@ import org.springframework.stereotype.Service;
 @Service
 public interface UserMapper {
 
-    User queryUser(Login login);
+    int insertCollege(SharedParam param);
 
-    int insertUser(User user);
+    int insertListCollege(SharedParam param);
 
-    int updateUser(User user);
+    int removeUser(List<Long> userIds);
 
-    int removeUse(Long userId);
+    List<HashMap<String, String>> queryCollege();
+
+    int updateCollege(College college);
+
+    int  insertDBLog(DBLog log);
+
+    DBLog queryDBLog(DBLog log);
+
+    int updateDBLog(DBLog log);
+
+    List<DBLog> queryAllDBLog(DBLog log);
+
+    int deleteDBLog(@Param("ids") List<Long> ids);
+
+    List<DBLog> queryListDBLog(@Param("ids") List<Long> ids);
 }

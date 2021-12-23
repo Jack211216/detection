@@ -1,6 +1,5 @@
 package com.detection.util.api;
 
-import com.aliyun.dysmsapi20170525.Client;
 import com.aliyun.dysmsapi20170525.models.*;
 import com.aliyun.teaopenapi.models.Config;
 import com.aliyuncs.CommonRequest;
@@ -11,20 +10,14 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
-
-import java.util.List;
+import com.detection.util.PropertiesUtil;
 
 /**
  * @Author ding
  * @Date 2021/12/10
  */
-public class aliyunUtil {
+public class AliYunAPI {
 
-    /**密钥ID*/
-    private static final String ACCESS_KEY_ID="LTAI5tS4XpMAQrdyZ2cM8b8p";
-
-    /**加密字符*/
-    private static final String ACCESS_KEY_SECRET="Mzwf2vsR7b6EnET773OC0GT3GZPIys";
 
     public static com.aliyun.dysmsapi20170525.Client createClient(String accessKeyId, String accessKeySecret) throws Exception {
         Config config = new Config()
@@ -41,7 +34,7 @@ public class aliyunUtil {
      * 创建短信模板
      * */
     public static AddSmsTemplateResponse createTemplate() throws Exception {
-        com.aliyun.dysmsapi20170525.Client client = aliyunUtil.createClient(ACCESS_KEY_ID, ACCESS_KEY_SECRET);
+        com.aliyun.dysmsapi20170525.Client client = AliYunAPI.createClient(PropertiesUtil.getKey("ACCESS_KEY_ID"), PropertiesUtil.getKey("ACCESS_KEY_SECRET"));
         AddSmsTemplateRequest addSmsTemplateRequest = new AddSmsTemplateRequest()
                 .setTemplateType(0)//   0：是验证码 1：短信...
                 .setTemplateName("test")  // 模板名称
@@ -54,7 +47,7 @@ public class aliyunUtil {
      * 发送短信
      * */
      public static void sendMessage(){
-         DefaultProfile profile = DefaultProfile.getProfile("cn-qingdao", ACCESS_KEY_ID, ACCESS_KEY_SECRET);
+         DefaultProfile profile = DefaultProfile.getProfile("cn-qingdao", PropertiesUtil.getKey("ACCESS_KEY_ID"), PropertiesUtil.getKey("ACCESS_KEY_SECRET"));
          IAcsClient client = new DefaultAcsClient(profile);
 
          CommonRequest request = new CommonRequest();
@@ -79,7 +72,7 @@ public class aliyunUtil {
      * 创建短信签名
      * */
     public static ModifySmsSignResponse createSignature() throws Exception {
-        com.aliyun.dysmsapi20170525.Client client = aliyunUtil.createClient(ACCESS_KEY_ID,ACCESS_KEY_SECRET);
+        com.aliyun.dysmsapi20170525.Client client = AliYunAPI.createClient(PropertiesUtil.getKey("ACCESS_KEY_ID"), PropertiesUtil.getKey("ACCESS_KEY_SECRET"));
 
         ModifySmsSignRequest modifySmsSignRequest = new ModifySmsSignRequest()
                 .setSignName("ding")
@@ -89,17 +82,18 @@ public class aliyunUtil {
     }
 
 
-    public static void main(String[] args_) throws Exception {
+    public static void main(String[] args_){
 //        AddSmsTemplateResponseBody body = createTemplate().getBody();
 //
 //        System.out.println(body.getCode());
 //        System.out.println(body.getTemplateCode());
 //        System.out.println(body.getMessage());
-        ModifySmsSignResponseBody body = createSignature().getBody();
-        System.out.println(body.getCode());
-        System.out.println(body.getSignName());
+//        ModifySmsSignResponseBody body = createSignature().getBody();
+//        System.out.println(body.getCode());
+//        System.out.println(body.getSignName());
 //        createTemplate();
 //          sendMessage();
+
     }
 }
 

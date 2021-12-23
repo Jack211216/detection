@@ -24,7 +24,7 @@ spring:
    datasource:
      username: admin
      password: admin123
-     url: jdbc:mysql://localhost:3306/detection?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+     url: jdbc:mysql://localhost:3306/detection?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
      type: com.alibaba.druid.pool.DruidDataSource
      driver-class-name: com.mysql.cj.jdbc.Driver
      druid:
@@ -42,4 +42,24 @@ mybatis-plus:
   # 加载全局的配置文件
   configLocation: classpath:mybatis/mybatis-config.xml
 
+# token配置
+token:
+  # 令牌自定义标识
+  header: Authorization
+  # 令牌密钥
+  secret: abcdefghijklmnopqrstu567yz123
+  # 令牌有效期（默认30分钟）
+  expireTime: 30
 
+#数据库备份参数配置
+DB:
+  #需要备份的数据库IP
+  COME_IP: localhost
+  #还原数据库的IP
+  GO_IP: localhost
+  #用户名
+  USER_KEY: root
+  #密码
+  USER_VALUE: 123
+  #需要备份的数据库名
+  DATA_BASE: detection
